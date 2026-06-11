@@ -1,0 +1,32 @@
+{
+  "name": "webp-cli-convert",
+  "version": "1.0.2",
+  "description": "CLI para convertir imágenes (JPG, PNG, GIF, etc.) a WebP con navegador de carpetas interactivo",
+  "main": "Convert.js",
+  "bin": {
+    "webp-cli-convert": "./Convert.js"
+  },
+  "files": [
+    "Convert.js"
+  ],
+  "scripts": {
+    "convert": "node Convert.js"
+  },
+  "keywords": [
+    "webp",
+    "image",
+    "converter",
+    "cli",
+    "sharp",
+    "jpg",
+    "png",
+    "compress"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "sharp": "^0.34.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
