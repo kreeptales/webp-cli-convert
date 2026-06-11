@@ -8,24 +8,25 @@ export async function convertImage(
   inputFile: string,
   opts: ConvertOptions,
 ): Promise<ConversionOutcome> {
-  const dir = opts.output ?? path.dirname(inputFile);
-  const baseName = path.basename(inputFile, path.extname(inputFile));
-  const outFile = path.join(dir, `${baseName}${opts.suffix}.webp`);
-
-  if (!fs.existsSync(dir)) {
-    await fsPromises.mkdir(dir, { recursive: true });
-  }
-
-  if (!opts.force && fs.existsSync(outFile)) {
-    return { status: "skipped", input: inputFile, output: outFile };
-  }
-
+  // Stat the input first — fail early before touching the filesystem
   let before: number;
   try {
     const beforeStat = await fsPromises.stat(inputFile);
     before = beforeStat.size;
   } catch (err) {
     return { status: "failed", input: inputFile, error: err as Error };
+  }
+
+  const dir = opts.output ?? path.dirname(inputFile);
+  const baseName = path.basename(inputFile, path.extname(inputFile));
+  const outFile = path.join(dir, `${baseName}${opts.suffix}.webp`);
+
+  if (!opts.force && fs.existsSync(outFile)) {
+    return { status: "skipped", input: inputFile, output: outFile };
+  }
+
+  if (!fs.existsSync(dir)) {
+    await fsPromises.mkdir(dir, { recursive: true });
   }
 
   const webpOpts = opts.lossless ? { lossless: true } : { quality: opts.quality, effort: 6 };
