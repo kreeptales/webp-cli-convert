@@ -1,11 +1,11 @@
-import path from "node:path";
 import fs from "node:fs";
+import path from "node:path";
+import { DEFAULT_OPTIONS } from "../constants.js";
+import type { ConvertOptions } from "../types.js";
 import { c } from "./colors.js";
 import { box } from "./components.js";
 import { numberPrompt, selectPrompt, textPrompt, togglePrompt } from "./prompts.js";
 import type { RawModeSession } from "./raw-mode.js";
-import { DEFAULT_OPTIONS } from "../constants.js";
-import type { ConvertOptions } from "../types.js";
 
 /**
  * Interactive wizard shown after selecting a folder/file in the browser.
@@ -30,7 +30,11 @@ export async function configureOptions(
   let quality = defaults.quality;
 
   if (!lossless) {
-    const q = await numberPrompt(session, "Quality (1–100)", { min: 1, max: 100, initial: quality });
+    const q = await numberPrompt(session, "Quality (1–100)", {
+      min: 1,
+      max: 100,
+      initial: quality,
+    });
     if (q === null) return null;
     quality = q;
   }
@@ -110,7 +114,7 @@ async function confirmationPrompt(
     `${c.dim}Originals    ${c.reset}${opts.deleteOriginals ? `${c.yellow}${c.bold}delete after conversion${c.reset}` : `${c.green}${c.bold}keep${c.reset}`}`,
   ];
 
-  process.stdout.write("\n" + box(lines, { title: "Conversion settings", color: c.cyan }) + "\n\n");
+  process.stdout.write(`\n${box(lines, { title: "Conversion settings", color: c.cyan })}\n\n`);
 
   const choice = await selectPrompt(session, "Ready to convert?", [
     { label: "Start conversion", value: "start" },

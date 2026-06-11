@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { SKIP_DIRS, SUPPORTED_EXTENSIONS } from "../constants.js";
 import { B, c, padEnd, vlen } from "./colors.js";
 import type { RawModeSession } from "./raw-mode.js";
-import { SKIP_DIRS, SUPPORTED_EXTENSIONS } from "../constants.js";
 
 interface Entry {
   name: string;
@@ -31,7 +31,9 @@ function frameBottom(): string {
 }
 
 function buildEntries(dir: string): Entry[] {
-  const items: Entry[] = [{ name: "[ Convert images in this folder ]", type: "select", fullPath: dir }];
+  const items: Entry[] = [
+    { name: "[ Convert images in this folder ]", type: "select", fullPath: dir },
+  ];
 
   const parent = path.dirname(dir);
   if (parent !== dir) {
@@ -64,12 +66,17 @@ function buildEntries(dir: string): Entry[] {
   return items;
 }
 
-function render(session: RawModeSession, currentPath: string, entries: Entry[], selectedIndex: number): void {
+function render(
+  session: RawModeSession,
+  currentPath: string,
+  entries: Entry[],
+  selectedIndex: number,
+): void {
   session.clear();
   const out: string[] = ["", frameTop("Folder Browser")];
 
   let displayPath = currentPath;
-  if (displayPath.length > W - 4) displayPath = "…" + displayPath.slice(-(W - 5));
+  if (displayPath.length > W - 4) displayPath = `…${displayPath.slice(-(W - 5))}`;
   out.push(frameMid(`${c.cyan}${displayPath}${c.reset}`));
   out.push(frameSep());
 
@@ -99,7 +106,9 @@ function render(session: RawModeSession, currentPath: string, entries: Entry[], 
       text = sel ? `${c.bold}${c.yellow}.. (go up)${c.reset}` : `${c.dim}.. (go up)${c.reset}`;
     } else if (entry.type === "dir") {
       icon = `${c.cyan}▸${c.reset}`;
-      text = sel ? `${c.bold}${c.cyan}${entry.name}/${c.reset}` : `${c.cyan}${entry.name}/${c.reset}`;
+      text = sel
+        ? `${c.bold}${c.cyan}${entry.name}/${c.reset}`
+        : `${c.cyan}${entry.name}/${c.reset}`;
     } else {
       icon = `${c.magenta}◆${c.reset}`;
       text = sel ? `${c.bold}${entry.name}${c.reset}` : `${c.dim}${entry.name}${c.reset}`;
@@ -108,7 +117,8 @@ function render(session: RawModeSession, currentPath: string, entries: Entry[], 
     out.push(frameMid(`${cursor} ${icon}  ${text}`));
   }
 
-  if (end < entries.length) out.push(frameMid(`${c.dim}  ↓ ${entries.length - end} more below${c.reset}`));
+  if (end < entries.length)
+    out.push(frameMid(`${c.dim}  ↓ ${entries.length - end} more below${c.reset}`));
 
   out.push(frameSep());
 
@@ -130,9 +140,11 @@ function render(session: RawModeSession, currentPath: string, entries: Entry[], 
 
   out.push(frameMid(note));
   out.push(frameBottom());
-  out.push(`  ${c.dim}↑↓${c.reset} navigate   ${c.dim}↵${c.reset} open/select   ${c.dim}←${c.reset} up   ${c.dim}q / Esc${c.reset} quit`);
+  out.push(
+    `  ${c.dim}↑↓${c.reset} navigate   ${c.dim}↵${c.reset} open/select   ${c.dim}←${c.reset} up   ${c.dim}q / Esc${c.reset} quit`,
+  );
 
-  process.stdout.write(out.join("\n") + "\n");
+  process.stdout.write(`${out.join("\n")}\n`);
 }
 
 export async function browseFolder(
@@ -199,7 +211,9 @@ export async function browseFolder(
             // flash permission error in note area - re-render with message
             const errEntries = [...entries];
             render(session, currentPath, errEntries, selectedIndex);
-            process.stdout.write(`\n  ${"\x1b[31m"}✖${"\x1b[0m"}  Cannot open folder (permission denied)\n`);
+            process.stdout.write(
+              `\n  ${"\x1b[31m"}✖${"\x1b[0m"}  Cannot open folder (permission denied)\n`,
+            );
           }
         } else if (entry.type === "file") {
           off();

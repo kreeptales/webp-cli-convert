@@ -1,5 +1,5 @@
-import { parseArgs as nodeParseArgs } from "node:util";
 import path from "node:path";
+import { parseArgs as nodeParseArgs } from "node:util";
 import { DEFAULT_OPTIONS } from "./constants.js";
 import { CliError } from "./types.js";
 import type { ConvertOptions } from "./types.js";
@@ -80,7 +80,7 @@ export function parseCliArgs(argv: string[]): ParsedArgs {
 
   if (rawValues.quality !== undefined) {
     const q = Number(rawValues.quality);
-    if (!Number.isInteger(q) || isNaN(q) || q < 1 || q > 100) {
+    if (!Number.isInteger(q) || Number.isNaN(q) || q < 1 || q > 100) {
       throw new CliError(
         `Invalid quality value: "${rawValues.quality}". Must be an integer between 1 and 100.`,
         2,

@@ -1,4 +1,4 @@
-const isTTY = process.stdout.isTTY && !process.env["NO_COLOR"];
+const isTTY = process.stdout.isTTY && !process.env.NO_COLOR;
 const e = (code: string) => (isTTY ? `\x1b[${code}m` : "");
 
 export const c = {
@@ -20,9 +20,12 @@ export const c = {
 
 export const B = { tl: "╭", tr: "╮", bl: "╰", br: "╯", h: "─", v: "│" };
 
+// Dynamic regex to avoid control-character-in-regex lint rule
+const ANSI_RE = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, "g");
+
 /** Strip ANSI codes and return the printable length of a string. */
 export function vlen(s: string): number {
-  return s.replace(/\x1b\[[0-9;]*m/g, "").length;
+  return s.replace(ANSI_RE, "").length;
 }
 
 /** Pad string to visible width `w`, ignoring ANSI codes. */

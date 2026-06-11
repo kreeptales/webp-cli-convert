@@ -20,8 +20,13 @@ export async function convertImage(
     return { status: "skipped", input: inputFile, output: outFile };
   }
 
-  const beforeStat = await fsPromises.stat(inputFile);
-  const before = beforeStat.size;
+  let before: number;
+  try {
+    const beforeStat = await fsPromises.stat(inputFile);
+    before = beforeStat.size;
+  } catch (err) {
+    return { status: "failed", input: inputFile, error: err as Error };
+  }
 
   const webpOpts = opts.lossless ? { lossless: true } : { quality: opts.quality, effort: 6 };
 

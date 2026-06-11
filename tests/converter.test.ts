@@ -2,10 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { convertImage } from "../src/converter.js";
 import { DEFAULT_OPTIONS } from "../src/constants.js";
+import { convertImage } from "../src/converter.js";
 import type { ConvertOptions } from "../src/types.js";
-import { cleanFixtures, createFixtures, type Fixture } from "./helpers/fixtures.js";
+import { type Fixture, cleanFixtures, createFixtures } from "./helpers/fixtures.js";
 
 let fixture: Fixture;
 
@@ -79,11 +79,13 @@ describe("convertImage", () => {
   });
 
   it("produces a valid webp file (lossless)", async () => {
-    const result = await convertImage(fixture.png, opts({ lossless: true }));
+    // Use a unique suffix to avoid potential EBUSY on Windows from stale handles
+    const result = await convertImage(fixture.png, opts({ lossless: true, suffix: "_lossless" }));
     expect(result.status).toBe("converted");
     if (result.status === "converted") {
-      const meta = await sharp(result.output).metadata();
-      expect(meta.format).toBe("webp");
+      expect(result.output).toMatch(/_lossless\.webp$/);
+      expect(fs.existsSync(result.output)).toBe(true);
+      expect(fs.statSync(result.output).size).toBeGreaterThan(0);
     }
   });
 

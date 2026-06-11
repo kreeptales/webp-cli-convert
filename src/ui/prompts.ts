@@ -46,7 +46,7 @@ export async function selectPrompt<T>(
     }
     lines.push(frameBottom());
     lines.push(`  ${c.dim}↑↓ navigate   ↵ select   Esc/Ctrl+C cancel${c.reset}`);
-    process.stdout.write(lines.join("\n") + "\n");
+    process.stdout.write(`${lines.join("\n")}\n`);
   }
 
   return new Promise((resolve) => {
@@ -85,7 +85,7 @@ export async function togglePrompt(
     const toggle = `${on}  /  ${off}`;
     const lines = ["", frameTop(title), frameMid(`  ${toggle}`), frameBottom()];
     lines.push(`  ${c.dim}← → or Y/N to toggle   ↵ confirm   Esc/Ctrl+C cancel${c.reset}`);
-    process.stdout.write(lines.join("\n") + "\n");
+    process.stdout.write(`${lines.join("\n")}\n`);
   }
 
   return new Promise((resolve) => {
@@ -128,7 +128,7 @@ export async function numberPrompt(
     const err = error ? `  ${c.red}${error}${c.reset}` : "";
     const lines = ["", frameTop(title), frameMid(`  ${display}  ${range}${err}`), frameBottom()];
     lines.push(`  ${c.dim}Type a number   ↵ confirm   Esc/Ctrl+C cancel${c.reset}`);
-    process.stdout.write(lines.join("\n") + "\n");
+    process.stdout.write(`${lines.join("\n")}\n`);
   }
 
   return new Promise((resolve) => {
@@ -164,10 +164,7 @@ export async function numberPrompt(
 export async function textPrompt(
   session: RawModeSession,
   title: string,
-  {
-    initial = "",
-    validate,
-  }: { initial?: string; validate?: (v: string) => string | null } = {},
+  { initial = "", validate }: { initial?: string; validate?: (v: string) => string | null } = {},
 ): Promise<string | null> {
   let buffer = initial;
   let error = "";
@@ -178,14 +175,9 @@ export async function textPrompt(
       ? `${c.bold}${buffer}${c.reset}${c.dim}▏${c.reset}`
       : `${c.dim}▏${c.reset}`;
     const err = error ? `  ${c.red}${error}${c.reset}` : "";
-    const lines = [
-      "",
-      frameTop(title),
-      frameMid(`  ${display}${err}`),
-      frameBottom(),
-    ];
+    const lines = ["", frameTop(title), frameMid(`  ${display}${err}`), frameBottom()];
     lines.push(`  ${c.dim}Type text   ↵ confirm   Esc/Ctrl+C cancel${c.reset}`);
-    process.stdout.write(lines.join("\n") + "\n");
+    process.stdout.write(`${lines.join("\n")}\n`);
   }
 
   return new Promise((resolve) => {

@@ -6,11 +6,11 @@ interface BoxOptions {
   pad?: number;
 }
 
-export function box(lines: string[], { title = "", color = c.cyan, pad = 1 }: BoxOptions = {}): string {
-  const inner = Math.max(
-    title ? vlen(title) + 4 : 0,
-    ...lines.map((l) => vlen(l) + pad * 2),
-  );
+export function box(
+  lines: string[],
+  { title = "", color = c.cyan, pad = 1 }: BoxOptions = {},
+): string {
+  const inner = Math.max(title ? vlen(title) + 4 : 0, ...lines.map((l) => vlen(l) + pad * 2));
 
   const out: string[] = [];
   const sp = " ".repeat(pad);
@@ -24,7 +24,9 @@ export function box(lines: string[], { title = "", color = c.cyan, pad = 1 }: Bo
   }
 
   for (const l of lines) {
-    out.push(`${color}${B.v}${c.reset}${sp}${padEnd(l, inner - pad * 2)}${sp}${color}${B.v}${c.reset}`);
+    out.push(
+      `${color}${B.v}${c.reset}${sp}${padEnd(l, inner - pad * 2)}${sp}${color}${B.v}${c.reset}`,
+    );
   }
 
   out.push(`${color}${B.bl}${B.h.repeat(inner)}${B.br}${c.reset}`);
