@@ -34,12 +34,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/username/webp-cli-convert.git"
+    "url": "git+https://github.com/kreeptales/webp-cli-convert.git"
   },
   "bugs": {
-    "url": "https://github.com/username/webp-cli-convert/issues"
+    "url": "https://github.com/kreeptales/webp-cli-convert/issues"
   },
-  "homepage": "https://github.com/username/webp-cli-convert#readme",
+  "homepage": "https://github.com/kreeptales/webp-cli-convert#readme",
   "dependencies": {
     "sharp": "^0.34.5"
   },

@@ -7,7 +7,7 @@ Thank you for your interest in contributing! Please be respectful and constructi
 Requirements: Node.js ≥ 20.3.0, npm ≥ 10.
 
 ```bash
-git clone https://github.com/username/webp-cli-convert.git
+git clone https://github.com/kreeptales/webp-cli-convert.git
 cd webp-cli-convert
 npm install
 ```

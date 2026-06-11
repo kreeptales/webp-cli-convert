@@ -1,7 +1,7 @@
 # webp-cli-convert
 
 [![npm version](https://img.shields.io/npm/v/webp-cli-convert.svg)](https://www.npmjs.com/package/webp-cli-convert)
-[![CI](https://github.com/username/webp-cli-convert/actions/workflows/ci.yml/badge.svg)](https://github.com/username/webp-cli-convert/actions/workflows/ci.yml)
+[![CI](https://github.com/kreeptales/webp-cli-convert/actions/workflows/ci.yml/badge.svg)](https://github.com/kreeptales/webp-cli-convert/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 Zero-fuss CLI to convert images to WebP. Features an interactive folder browser with an options wizard, or direct conversion via flags.
