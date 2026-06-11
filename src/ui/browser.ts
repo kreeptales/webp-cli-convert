@@ -11,6 +11,13 @@ interface Entry {
 }
 
 const W = 60;
+// Max visible chars for entry name: W - border/padding(2) - frameMid space(1+1) - cursor(1) - icon(1) - spaces(2)
+const MAX_NAME = W - 8;
+
+function truncName(name: string, extra = 0): string {
+  const limit = MAX_NAME - extra;
+  return name.length > limit ? `${name.slice(0, limit - 1)}…` : name;
+}
 
 function frameTop(title: string): string {
   const head = `${B.h}${B.h} ${c.bold}${c.cyan}${title}${c.reset}${c.dim} `;
@@ -105,13 +112,13 @@ function render(
       icon = `${c.yellow}↰${c.reset}`;
       text = sel ? `${c.bold}${c.yellow}.. (go up)${c.reset}` : `${c.dim}.. (go up)${c.reset}`;
     } else if (entry.type === "dir") {
+      const name = truncName(entry.name, 1); // 1 extra for trailing "/"
       icon = `${c.cyan}▸${c.reset}`;
-      text = sel
-        ? `${c.bold}${c.cyan}${entry.name}/${c.reset}`
-        : `${c.cyan}${entry.name}/${c.reset}`;
+      text = sel ? `${c.bold}${c.cyan}${name}/${c.reset}` : `${c.cyan}${name}/${c.reset}`;
     } else {
+      const name = truncName(entry.name);
       icon = `${c.magenta}◆${c.reset}`;
-      text = sel ? `${c.bold}${entry.name}${c.reset}` : `${c.dim}${entry.name}${c.reset}`;
+      text = sel ? `${c.bold}${name}${c.reset}` : `${c.dim}${name}${c.reset}`;
     }
 
     out.push(frameMid(`${cursor} ${icon}  ${text}`));
