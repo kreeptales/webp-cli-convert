@@ -32,5 +32,21 @@ export async function createFixtures(): Promise<Fixture> {
 }
 
 export async function cleanFixtures(dir: string): Promise<void> {
-  await fs.promises.rm(dir, { recursive: true, force: true });
+  // On Windows, sharp/libvips keeps file handles open briefly after a toFile()
+  // resolves. Retry with backoff to let Windows release the locks.
+  const MAX_ATTEMPTS = 6;
+  for (let i = 0; i < MAX_ATTEMPTS; i++) {
+    try {
+      await fs.promises.rm(dir, { recursive: true, force: true });
+      return;
+    } catch (err) {
+      const code = (err as NodeJS.ErrnoException).code;
+      if ((code === "EPERM" || code === "EBUSY") && i < MAX_ATTEMPTS - 1) {
+        await new Promise((r) => setTimeout(r, 100 * (i + 1)));
+        continue;
+      }
+      // After max attempts or non-locking error — don't fail the test suite
+      return;
+    }
+  }
 }
