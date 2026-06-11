@@ -1,16 +1,26 @@
 {
   "name": "webp-cli-convert",
-  "version": "1.0.2",
-  "description": "CLI para convertir imágenes (JPG, PNG, GIF, etc.) a WebP con navegador de carpetas interactivo",
-  "main": "Convert.js",
+  "version": "2.0.0",
+  "description": "Zero-fuss CLI to convert images (JPG, PNG, GIF, TIFF, AVIF, BMP) to WebP, with an interactive folder browser and options wizard",
+  "type": "module",
   "bin": {
-    "webp-cli-convert": "./Convert.js"
+    "webp-cli-convert": "./dist/cli.js"
   },
   "files": [
-    "Convert.js"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
-    "convert": "node Convert.js"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/cli.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "keywords": [
     "webp",
@@ -20,13 +30,31 @@
     "sharp",
     "jpg",
     "png",
-    "compress"
+    "compress",
+    "interactive",
+    "batch"
   ],
+  "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/webp-cli-convert.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/webp-cli-convert/issues"
+  },
+  "homepage": "https://github.com/username/webp-cli-convert#readme",
   "dependencies": {
     "sharp": "^0.34.5"
   },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^20.19.43",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.6"
+  },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.3.0"
   }
 }
