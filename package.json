@@ -1,12 +1,16 @@
 {
   "name": "webp-cli-convert",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Zero-fuss CLI to convert images (JPG, PNG, GIF, TIFF, AVIF, BMP) to WebP, with an interactive folder browser and options wizard",
   "type": "module",
   "bin": {
     "webp-cli-convert": "./dist/cli.js"
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
